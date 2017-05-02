@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-
+import numpy as np
 
 # loading neuron 1 - 4 
 csvneuron1 = open("data/neuron1.csv")
@@ -73,6 +73,8 @@ p1, = plt.plot(x_neuron1, y_neuron1, 'ro', markeredgecolor='black', alpha=0.6)
 p3, = plt.plot(x_neuron3, y_neuron3, 'co', markeredgecolor='black', alpha=0.6)
 plt.title("Position within map, where which each neuron was fired.", fontsize=20)
 plt.xlabel('X Coordinate', fontsize=15)
+plt.xticks(np.arange(np.min(x), np.max(x)+1, 20.0))
 plt.ylabel('Y Coordinate', fontsize=15)
+plt.yticks(np.arange(np.min(y), np.max(y)+1, 20.0))
 plt.legend([p1, p2, p3, p4], ["Neuron 1", "Neuron 2", "Neuron 3", "Neuron 4"])
 plt.show()
