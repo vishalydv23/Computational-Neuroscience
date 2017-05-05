@@ -111,7 +111,7 @@ for i in range(time[0],time[len(time)-1]):
 
 plt.grid()
 plt.hist(countList, bins=range(min(countList), max(countList) + binwidth, binwidth))
-plt.xlabel("Firing Rate in Hz", fontsize=15)
-plt.ylabel("Number of neuron", fontsize=15)
-plt.title("Histogram of firing rate of neuron 4", fontsize=20)
+plt.xlabel("Firing Rate in Hz", fontsize=20)
+plt.ylabel("Number of neuron", fontsize=20)
+plt.title("Histogram of firing rate of neuron 4", fontsize=25)
 plt.show()

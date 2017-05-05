@@ -99,7 +99,7 @@ for i in range(time[0],time[len(time)-1]):
 plt.figure(0)
 ax2 = plt.subplot2grid((3,4), (0,0),colspan=2)
 plt.plot(modifiedTime,countList2, label='Firing rate in F1 (Left Upper Region)')
-plt.ylabel("Firing Rate in Hz")
+plt.ylabel("Firing Rate in Hz", fontsize=15)
 ax2.legend(loc="upper right")
 
 ax1 = plt.subplot2grid((3,4), (0,2), colspan=2)
@@ -109,20 +109,20 @@ ax1.legend(loc="upper right")
 
 ax5 = plt.subplot2grid((3,4), (1, 0), colspan=4)
 plt.plot(modifiedTime,countList5, label='Firing rate in connection (Center Region)')
-plt.ylabel("Firing Rate in Hz")
+plt.ylabel("Firing Rate in Hz", fontsize=15)
 ax5.legend(loc="upper right")
 
 ax4 = plt.subplot2grid((3,4), (2, 0), colspan=2)
 plt.plot(modifiedTime,countList4, label='Firing rate in F2 (Left Down Region)')
-plt.xlabel("Time in second ranging from 3198 sec to 4286 sec")
-plt.ylabel("Firing Rate in Hz")
+plt.xlabel("Time in second ranging from 3198 sec to 4286 sec", fontsize=15)
+plt.ylabel("Firing Rate in Hz", fontsize=15)
 ax4.legend(loc="upper right")
 
 ax3 = plt.subplot2grid((3,4), (2, 2), colspan=2)
 plt.plot(modifiedTime,countList3, label='Firing rate in C2 (Right Down Region)')
-plt.xlabel("Time in second ranging from 3198 sec to 4286 sec")
+plt.xlabel("Time in second ranging from 3198 sec to 4286 sec", fontsize=15)
 ax3.legend(loc="upper right")
 
-plt.suptitle("Firing rates of neuron 4 in different part of the maze")
+plt.suptitle("Firing rates of neuron 4 in different part of the maze", fontsize=25)
 plt.show()
 
