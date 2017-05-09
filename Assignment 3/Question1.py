@@ -4,7 +4,7 @@ import random
 import math
 
 deltaT = 1  # time step [ms]
-totalTime = 1000  * 2 # taking time in [ms]
+totalTime = 1000  * 200 # taking time in [ms]
 i = 0  # index denoting which element of V is being assigned
 # *************************************1st simulation variables*******************************************************
 
@@ -75,8 +75,8 @@ for index in range(totalTime):
 		spike_flag = 1
 	synaptic_amplitude = 0
 
-	if(index > totalTime/2):
-		STDP_Flag = 0 #STDP is switched on
+	# if(index > totalTime/2):
+	# 	STDP_Flag = 0 #STDP is switched on
 
 	if spike_flag == 1: # if spike observed in neuron
 		synaptic_amplitude = 1
@@ -87,9 +87,14 @@ for index in range(totalTime):
 			plasticityVariable = -1 * A_minus * math.exp(-1 * (abs(time_diff) / Tau_minus))
 		synapse = synapse + synaptic_amplitude
 	else:
-		synapse = math.exp(-1 * (deltaT / tau_s)) * deltaT 
+		synapse = math.exp(-1 * (deltaT / tau_s)) * deltaT
 
+	if(synapse < 0):
+		synapse = 0
+	elif(synapse > 2):
+		synapse = 2
 
+	synapse = 1.131388
 	if(STDP_Flag == 0):
 		plasticityVariable = 0
 
@@ -117,11 +122,12 @@ for index in range(totalTime):
 synapticstrength.append(synapticstrength[len(synapticstrength)-1]) # treating last value of synaptic strength , same as second last.
 firingRateVector.append(firingRateVector[len(firingRateVector)-1])
 
-
+print(np.mean(synapticstrength))
 # plt.hist(synapticstrength)
-plt.plot(time, firingRateVector)
+# plt.plot(time, synapticstrength) # synaptic strength distribution
+plt.plot(time, firingRateVector) # firing rate with stpd on
 plt.grid()
-plt.xlabel("Time in ms")
-plt.ylabel("Voltage in mV")
-plt.title("Excitatory Synapse with Equilibrium Potential 0.0")
+plt.xlabel("time [ms]", fontsize = 15)
+plt.ylabel("Firing rate", fontsize = 15)
+plt.title("Firing rate of postsynaptic neuron (STDP on)", fontsize = 20)
 plt.show()

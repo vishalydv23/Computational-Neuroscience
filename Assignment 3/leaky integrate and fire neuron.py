@@ -5,7 +5,7 @@ import math
 
 # Parameters to be used for the integrate and fire equation
 deltaT = 1 #timestep [ms]
-totalTime = 1000 * 200#taking time in [ms]
+totalTime = 1000 * 20#taking time in [ms]
 E_L = -65.0 #resting voltage [mV]
 V_reset = -65.0 #reset voltage [mV]
 V_Th = -50.0 # Threshold voltage  [mV]
@@ -20,7 +20,7 @@ tau_s = 2.0  # time constant of synapse[ms]
 T_f = 0  #when did the presynaptic neuron last fire?
 
 
-# Asuming synapses are Inhibitory
+# Asuming synapses are Excitatory
 E_s = 0.0  # [mV]
 
 
@@ -49,8 +49,8 @@ for index in range(totalTime):
     # T_f = index
 
 plt.plot(time, Voltage)
-plt.xlabel("Time in ms")
-plt.ylabel("Voltage in mV")
-plt.title("Excitatory Synapse with Equilibrium Potential 0.0")
+plt.xlabel("Time in ms", fontsize = 15)
+plt.ylabel("Voltage in mV", fontsize = 15)
+plt.title("Leaky integrate and fire model of postsynaptic neuron", fontsize = 20)
 plt.show()
 
