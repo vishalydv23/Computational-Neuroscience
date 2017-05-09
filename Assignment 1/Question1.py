@@ -13,7 +13,7 @@ n = int(totalTime / deltaT)
 
 #initial vector to hold value
 time = np.linspace(0,totalTime, n+1) #will hold vector of times
-Voltage = np.zeros(len(time))  #initialize the voltage vector.
+Voltage = np.zeros(len(time))#initialize the voltage vector.
 
 i = 0; #index denoting which element of V is being assigned
 Voltage[i]=E_L; #value of V at t=0

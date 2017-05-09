@@ -34,7 +34,7 @@ plt.grid()
 plt.hist(countList, bins=range(min(countList), max(countList) + binwidth, binwidth))
 plt.xlabel("Firing Rate in Hz", fontsize=15)
 plt.ylabel("Number of neuron", fontsize=15)
-plt.title("Histogram of firing rate of neuron 1", fontsize=20)
+plt.title("Histogram of firing rate of neuron 1", fontsize=20)	
 plt.show()
 
 csvneuron2 = open("data/neuron2.csv")

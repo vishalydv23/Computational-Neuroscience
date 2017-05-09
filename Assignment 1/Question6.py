@@ -26,7 +26,7 @@ I_e = 3.1; #injected current [nA]
 
 for index in range(totalTime):
 	dg_k = ((-1 * g_k) / tau_k) * deltaT
-	g_k = g_k + dg_k
+	g_k = g_k + dg_k 
 	dv = ((-Voltage[index] + E_L + (I_e * Rm) - ((Rm * g_k) * (E_K - Voltage[index])))/tau) * deltaT
 	Voltage[index + 1] = Voltage[index] + dv
 

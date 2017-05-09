@@ -46,7 +46,7 @@ for index in range(totalTime):
 
   if(VoltagePreSynaptic[index + 1] > V_Th):
     VoltagePreSynaptic[index + 1] = V_reset
-    T_f = index
+    # T_f = index
 
   P_sb = P_max * math.exp(-1 * ((index - T_f) / t_s)) * (index - T_f)
   dV_b = ((E_L - VoltagePostSynaptic[index] - ((P_sb * R_mG_s) * (VoltagePostSynaptic[index] - E_s)) + (R_mI_e)) / tau) * deltaT
@@ -54,7 +54,7 @@ for index in range(totalTime):
 
   if(VoltagePostSynaptic[index + 1] > V_Th):
     VoltagePostSynaptic[index + 1] = V_reset
-    T_f = index
+    # T_f = index
 
 p1, = plt.plot(time,VoltagePreSynaptic, 'b')
 p2, = plt.plot(time,VoltagePostSynaptic, 'r')
