@@ -4,7 +4,7 @@ import random
 import math
 
 deltaT = 1  # time step [ms]
-totalTime = 1000 * 20  # taking time in [ms]
+totalTime = 1000  * 2 # taking time in [ms]
 i = 0  # index denoting which element of V is being assigned
 # *************************************1st simulation variables*******************************************************
 
@@ -15,7 +15,8 @@ V_Th = -50.0  # Threshold voltage  [mV]
 Rm = 100  # membrane resistance [Mohm]
 tau_m = 10  # time constant [ms]
 C = 0.1  # [nF]
-g_syn = random.uniform(0, 2.0)  # initial peak conductance [nS]
+# g_syn = random.uniform(0, 2.0)  # initial peak conductance [nS]
+g_syn = 2.0
 G_syn = 0
 tau_s = 2.0  # time constant of synapse[ms]
 T_f = 0  # when did the presynaptic neuron last fire?
@@ -28,7 +29,7 @@ Voltage = np.zeros(len(time))  # vector of voltage
 Voltage[i] = E_L  # value of V at t=0
 # ****************************************2nd simulation variables*****************************************************
 synapses = []
-rate = 10  # firing rate [Hz]
+rate = 15  # firing rate [Hz]
 
 # *****************************************3rd simulation variables****************************************************
 
@@ -38,18 +39,15 @@ Tau_plus = 20  # [ms]
 Tau_minus = 20  # [ms]
 
 # *****************************************setting up synapse**********************************************************
-# storing spike train of 40 synapses
 spikeIndex = []
 
 for synapse in range(40):
-	# spikeTrain = []
-	# spikeTimes = []
 	for index in range(totalTime):
 		if (rate * deltaT) / 1000 >= random.uniform(0,1):
 			spikeIndex.append(index)
-	# synapses.append(spikeTrain)
-spikeIndex.sort()
-list(set(spikeIndex))
+
+sortedlist = sorted(spikeIndex)
+print(list(set(sortedlist)))
 # *******************************************setting up the neuron*****************************************************
 # setting up the neuron
 voltage_indexlist = []
@@ -58,24 +56,47 @@ spike_counter = 0
 time_diff = 0
 plasticityVariable = 0
 
+neuron_spike_counter = 0 # count the spikes of post synaptic neuron
+firingRate = 0
+firingRateVector = []
+
 # default state of the STDP
-STDP_Flag = 1
+STDP_Flag = 0
+synaptic_amplitude = 0 # synaptic applitude , 1 id added once spike is observed
+T_f = 0 # last time when neuron observed spike
+
+synapse = 0 # synaptic strength value
+synapticstrength = []
+
 
 for index in range(totalTime):
-	if spike_flag == 1:
+	if(index in spikeIndex):
+		time_diff = T_f - index
+		spike_flag = 1
+	synaptic_amplitude = 0
+
+	if(index > totalTime/2):
+		STDP_Flag = 0 #STDP is switched on
+
+	if spike_flag == 1: # if spike observed in neuron
+		synaptic_amplitude = 1
 		spike_flag = 0
 		if(time_diff > 0):
 			plasticityVariable = A_Plus * math.exp(-1 * (abs(time_diff) / Tau_plus))
 		else:
 			plasticityVariable = -1 * A_minus * math.exp(-1 * (abs(time_diff) / Tau_minus))
+		synapse = synapse + synaptic_amplitude
+	else:
+		synapse = math.exp(-1 * (deltaT / tau_s)) * deltaT 
+
+
 	if(STDP_Flag == 0):
 		plasticityVariable = 0
-	d_g_syn = g_syn * math.exp(-1 * (deltaT / tau_s)) * deltaT + plasticityVariable
+
+	synapticstrength.append(synapse)
+	# synapse = math.exp(-1 * (deltaT / tau_s)) * deltaT 
+	d_g_syn = g_syn * synapse + plasticityVariable
 	G_syn = G_syn + d_g_syn  # conductance
-	# if(G_syn < 0):
-	# 	G_syn = 0
-	# elif(G_syn > 2):
-	# 	G_syn = 2
 	I_e = (40 * G_syn * ((E_s - Voltage[index]) * 0.000001)) #input current
 	V_Themp = E_L + I_e * Rm
 	Voltage[index + 1] = V_Themp + (Voltage[index] - V_Themp) * np.exp(- deltaT / tau_m)
@@ -83,21 +104,23 @@ for index in range(totalTime):
 	if(Voltage[index + 1] > V_Th):
 		Voltage[index + 1] = V_reset
 		G_syn = 0
+		neuron_spike_counter += 1 
 		if(spike_counter < len(spikeIndex)):
 			time_diff = index - spikeIndex[spike_counter]
 			spike_counter += 1
-			spike_flag = 1
-			
-		# voltage_indexlist.append(index)
+			synaptic_amplitude = spike_flag = 1
+			T_f = index
 
-# **********************************************STPD*******************************************************************
-# min_length = (min(len(spikeIndex), len(voltage_indexlist)))
-# time_diff = 0
+	firingRate = (neuron_spike_counter / totalTime) * 1000 # firing rate in seconds
+	firingRateVector.append(firingRate)
 
-# for index in range(min_length):
-# 	time_diff = voltage_indexlist[index] - 
+synapticstrength.append(synapticstrength[len(synapticstrength)-1]) # treating last value of synaptic strength , same as second last.
+firingRateVector.append(firingRateVector[len(firingRateVector)-1])
 
-plt.plot(time, Voltage)
+
+# plt.hist(synapticstrength)
+plt.plot(time, firingRateVector)
+plt.grid()
 plt.xlabel("Time in ms")
 plt.ylabel("Voltage in mV")
 plt.title("Excitatory Synapse with Equilibrium Potential 0.0")
